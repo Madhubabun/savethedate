@@ -1,47 +1,67 @@
-
 // Countdown
 const target = new Date('2026-06-10T10:00:00');
-function updateCountdown(){
+
+function updateCountdown() {
   const x = Math.max(0, target - new Date());
-  const ids = ['d','h','m','s'];
-  const vals = [
-    Math.floor(x/86400000),
-    Math.floor(x/3600000)%24,
-    Math.floor(x/60000)%60,
-    Math.floor(x/1000)%60
-  ];
-  ids.forEach((id,i)=>{ const el=document.getElementById(id); if(el) el.textContent = vals[i]; });
+
+  const values = {
+    d: Math.floor(x / 86400000),
+    h: Math.floor(x / 3600000) % 24,
+    m: Math.floor(x / 60000) % 60,
+    s: Math.floor(x / 1000) % 60
+  };
+
+  Object.entries(values).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  });
 }
+
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// Floating effects
-const symbols = [
-  {char:'🌸', size:[18,34]},
-  {char:'🌺', size:[20,36]},
-  {char:'🌷', size:[18,32]},
-  {char:'✨', size:[14,26]},
-  {char:'🕊️', size:[20,34]},
-  {char:'🌹', size:[20,34]}
-];
+// ============================================
+// Soft Transparent Falling Love Symbols Only
+// ============================================
+
+const symbols = ['💞',];
 
 const layer = document.createElement('div');
 layer.id = 'floating-effects';
 document.body.appendChild(layer);
 
-function rand(min, max){ return Math.random() * (max - min) + min; }
+function rand(min, max) {
+  return Math.random() * (max - min) + min;
+}
 
-for(let i=0; i<70; i++){
+// Smaller quantity for subtle effect
+const TOTAL_SYMBOLS = 18;
+
+for (let i = 0; i < TOTAL_SYMBOLS; i++) {
   const item = document.createElement('div');
   item.className = 'floating-item';
-  const sym = symbols[Math.floor(Math.random()*symbols.length)];
-  item.textContent = sym.char;
+
+  item.textContent =
+    symbols[Math.floor(Math.random() * symbols.length)];
+
+  // Random positions
   item.style.left = rand(-5, 100) + 'vw';
-  item.style.fontSize = rand(sym.size[0], sym.size[1]) + 'px';
-  item.style.animationDuration = rand(10, 28) + 's';
-  item.style.animationDelay = (-rand(0, 28)) + 's';
-  item.style.setProperty('--drift', rand(-120, 120) + 'px');
-  item.style.setProperty('--rotate', rand(-540, 540) + 'deg');
-  item.style.opacity = rand(0.25, 0.8);
+
+  // Small size
+  item.style.fontSize = rand(18, 28) + 'px';
+
+  // Slow movement
+  item.style.animationDuration = rand(18, 35) + 's';
+
+  // Random stagger
+  item.style.animationDelay = (-rand(0, 35)) + 's';
+
+  // Natural drift
+  item.style.setProperty('--drift', rand(-80, 80) + 'px');
+  item.style.setProperty('--rotate', rand(-180, 180) + 'deg');
+
+  // Transparent appearance
+  item.style.opacity = rand(0.10, 0.22);
+
   layer.appendChild(item);
 }
